@@ -21,6 +21,8 @@ export type TodoContextType = {
   getTodoById: (id: string) => Promise<ITodo | undefined>;
   toggleCompletedTodo: (todo: ITodo) => Promise<AxiosResponse>;
   searchTodos: (searchTerm: string) => void;
+  completedTodos: ITodo[];
+  activeTodos: ITodo[];
 };
 
 export interface IProps {

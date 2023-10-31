@@ -37,6 +37,9 @@ const TodoProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   };
 
+  const completedTodos = todos.filter((todo: ITodo) => todo.completed);
+  const activeTodos = todos.filter((todo: ITodo) => !todo.completed);
+
   const searchTodos = (searchTerm: string) => {
     if (!searchTerm) {
       fetchTodos();
@@ -133,6 +136,8 @@ const TodoProvider: React.FC<{ children: React.ReactNode }> = ({
       value={{
         loading,
         todos,
+        completedTodos,
+        activeTodos,
         addTodo,
         updateTodo,
         deleteTodo,

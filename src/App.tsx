@@ -6,7 +6,7 @@ import { BrowserRouter as Router } from "react-router-dom";
 function App() {
   return (
     <>
-      <Router basename="/todo_app">
+      <Router basename="/">
         <TodoProvider>
           <div className="App">
             <Layout />

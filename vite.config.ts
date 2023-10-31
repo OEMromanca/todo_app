@@ -7,8 +7,6 @@ import WindiCSS from 'vite-plugin-windicss';
     React(),
     WindiCSS(),
    ],
-   build: {
-    outDir: 'dist',
-   },
+
    base: ''
 });

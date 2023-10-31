@@ -9,5 +9,6 @@ import WindiCSS from 'vite-plugin-windicss';
    ],
    build: {
     outDir: 'dist',
-  },
+   },
+   base: ''
 });

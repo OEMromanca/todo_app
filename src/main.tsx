@@ -7,7 +7,7 @@ import TodoProvider from "./context/todoContext.tsx";
 
 const router = createHashRouter([
   {
-    path: "/*",
+    path: "*/",
     element: <App />,
   },
 ]);

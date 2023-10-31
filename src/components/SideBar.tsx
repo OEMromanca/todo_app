@@ -7,7 +7,7 @@ const SideBar: React.FC = () => {
         <ul className="space-y-1 mt-20">
           <li className="bg-black">
             <Link
-              to="/"
+              to="/todo_app"
               className="text-gray-300 hover:text-white hover:bg-gray-800  block w-full py-4 px-4  "
             >
               All todos
@@ -15,7 +15,7 @@ const SideBar: React.FC = () => {
           </li>
           <li className="bg-black">
             <Link
-              to="/active"
+              to="/todo_app/active"
               className="text-gray-300 hover:text-white hover:bg-gray-800  block w-full py-4 px-4 "
             >
               Active todos
@@ -23,7 +23,7 @@ const SideBar: React.FC = () => {
           </li>
           <li className="bg-black">
             <Link
-              to="/completed"
+              to="/todo_app/completed"
               className="text-gray-300 hover:text-white hover:bg-gray-800  block w-full py-4 px-4 "
             >
               Completed todos

@@ -8,10 +8,10 @@ const Content: React.FC = () => {
   return (
     <div className="content">
       <Routes>
-        <Route index path="/" element={<Todos />} />
-        <Route path="/completed" element={<CompletedTodos />} />
-        <Route path="/active" element={<ActiveTodos />} />
-        <Route path="/submit" element={<SubmitTodo />} />
+        <Route index path="/todo_app" element={<Todos />} />
+        <Route path="/todo_app/completed" element={<CompletedTodos />} />
+        <Route path="/todo_app/active" element={<ActiveTodos />} />
+        <Route path="/todo_app/submit" element={<SubmitTodo />} />
       </Routes>
     </div>
   );

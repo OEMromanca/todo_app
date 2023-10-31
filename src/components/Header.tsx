@@ -23,7 +23,7 @@ const Header: React.FC = () => {
           type="button"
           className="h-12 w-12 mr-6 rounded-full bg-gray-600 flex items-center justify-center text-gray-400 hover:bg-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
         >
-          <Link to="/submit">
+          <Link to="/todo_appsubmit">
             <PlusIcon className="h-6 w-6" aria-hidden="true" />
           </Link>
         </button>

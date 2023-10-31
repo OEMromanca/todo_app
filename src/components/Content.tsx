@@ -1,5 +1,4 @@
 import { Route, Routes } from "react-router-dom";
-import { Suspense, lazy } from "react";
 import Todos from "./Todos";
 import CompletedTodos from "./CompletedTodos";
 import ActiveTodos from "./ActiveTodos";

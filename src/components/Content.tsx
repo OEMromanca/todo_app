@@ -11,6 +11,7 @@ const Content: React.FC = () => {
     <div className="content">
       <Routes>
         <Route
+          index
           path="/"
           element={
             <Suspense fallback={<div>Loading...</div>}>

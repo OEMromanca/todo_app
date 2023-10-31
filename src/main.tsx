@@ -16,7 +16,6 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <TodoProvider>
       <RouterProvider router={router} />
-      <App />
     </TodoProvider>
   </React.StrictMode>
 );

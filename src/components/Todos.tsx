@@ -5,7 +5,10 @@ import { ITodo, TodoContextType } from "../interfaces/interfaces";
 import { AcademicCapIcon } from "@heroicons/react/solid";
 
 const Todos: React.FC = () => {
-  const { todos } = React.useContext(TodoContext) as TodoContextType;
+  const { todos, loading } = React.useContext(TodoContext) as TodoContextType;
+  if (loading) {
+    <div>...Loading</div>;
+  }
 
   return (
     <>

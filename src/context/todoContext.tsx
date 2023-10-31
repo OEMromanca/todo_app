@@ -18,7 +18,7 @@ const TodoProvider: React.FC<{ children: React.ReactNode }> = ({
   const [loading, setLoading] = React.useState(true);
 
   React.useEffect(() => {
-    fetchTodos();
+    fetchTodos().then(() => setLoading(false));
   }, []);
 
   const fetchTodos = async () => {

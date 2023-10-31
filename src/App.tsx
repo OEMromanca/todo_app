@@ -1,9 +1,7 @@
 import "./App.css";
+import Layout from "./components/Layout";
 import TodoProvider from "./context/todoContext";
 import { BrowserRouter as Router } from "react-router-dom";
-import { lazy, Suspense } from "react";
-
-const LazyLayout = lazy(() => import("./components/Layout"));
 
 function App() {
   return (
@@ -11,9 +9,7 @@ function App() {
       <Router>
         <TodoProvider>
           <div className="App">
-            <Suspense fallback={<div>Loading...</div>}>
-              <LazyLayout />
-            </Suspense>
+            <Layout />
           </div>
         </TodoProvider>
       </Router>

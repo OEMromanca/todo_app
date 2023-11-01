@@ -18,7 +18,7 @@ const TodoProvider: React.FC<{ children: React.ReactNode }> = ({
   const [loading, setLoading] = React.useState(true);
 
   React.useEffect(() => {
-    fetchTodos().then(() => setLoading(false));
+    fetchTodos();
   }, []);
 
   const fetchTodos = async () => {
@@ -27,109 +27,131 @@ const TodoProvider: React.FC<{ children: React.ReactNode }> = ({
       if (response.status === 200) {
         setLoading(false);
         const allTodos = response.data as ITodo[];
-
         setTodos(allTodos);
       } else {
         throw new Error("Failed to fetch data from the API.");
       }
     } catch (error) {
       setLoading(true);
+      console.log(error);
     }
   };
 
-  const completedTodos = todos.filter((todo: ITodo) => todo.completed);
-  const activeTodos = todos.filter((todo: ITodo) => !todo.completed);
+  const completedTodos = React.useMemo(
+    () => todos.filter((todo: ITodo) => todo.completed),
+    [todos]
+  );
+  const activeTodos = React.useMemo(
+    () => todos.filter((todo: ITodo) => !todo.completed),
+    [todos]
+  );
 
-  const searchTodos = (searchTerm: string) => {
-    if (!searchTerm) {
-      fetchTodos();
-    }
-    const filtered = todos.filter((todo) =>
-      todo.title.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-    setTodos(filtered);
-  };
-
-  const addTodo = async (newTodo: Omit<ITodo, "id">) => {
-    try {
-      const todo: Omit<ITodo, "id"> = {
-        title: newTodo.title,
-        description: newTodo.description,
-        deadline: newTodo.deadline,
-        completed: false,
-      };
-      const saveTodo = await addTodoAPI(todo);
-      fetchTodos();
-      return saveTodo.data;
-    } catch (error) {
-      if (typeof error === "string") {
-        throw new Error(error);
-      } else {
-        throw new Error("An error occurred.");
+  const searchTodos = React.useCallback(
+    (searchTerm: string) => {
+      if (!searchTerm) {
+        fetchTodos();
       }
-    }
-  };
+      const filtered = todos.filter((todo) =>
+        todo.title.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+      setTodos(filtered);
+    },
+    [fetchTodos, todos]
+  );
 
-  const updateTodo = async (todo: ITodo) => {
-    try {
-      const updatedTodo = await updateTodoAPI(todo);
-      fetchTodos();
-
-      return updatedTodo;
-    } catch (error) {
-      if (typeof error === "string") {
-        throw new Error(error);
-      } else {
-        throw new Error("An error occurred.");
+  const addTodo = React.useCallback(
+    async (newTodo: Omit<ITodo, "id">) => {
+      try {
+        const todo: Omit<ITodo, "id"> = {
+          title: newTodo.title,
+          description: newTodo.description,
+          deadline: newTodo.deadline,
+          completed: false,
+        };
+        const saveTodo = await addTodoAPI(todo);
+        fetchTodos();
+        return saveTodo.data;
+      } catch (error) {
+        if (typeof error === "string") {
+          throw new Error(error);
+        } else {
+          throw new Error("An error occurred.");
+        }
       }
-    }
-  };
+    },
+    [addTodoAPI, fetchTodos]
+  );
 
-  const toggleCompletedTodo = async (todo: ITodo) => {
-    try {
-      const completedTodo = await toggleCompletedTodoAPI(todo);
-      fetchTodos();
+  const updateTodo = React.useCallback(
+    async (todo: ITodo) => {
+      try {
+        const updatedTodo = await updateTodoAPI(todo);
+        fetchTodos();
+        return updatedTodo;
+      } catch (error) {
+        if (typeof error === "string") {
+          throw new Error(error);
+        } else {
+          throw new Error("An error occurred.");
+        }
+      }
+    },
+    [fetchTodos, updateTodoAPI]
+  );
 
-      return completedTodo;
-    } catch (error) {
-      if (typeof error === "string") {
-        throw new Error(error);
-      } else {
-        throw new Error("An error occurred.");
+  const toggleCompletedTodo = React.useCallback(
+    async (todo: ITodo) => {
+      try {
+        const completedTodo = await toggleCompletedTodoAPI(todo);
+        fetchTodos();
+        return completedTodo;
+      } catch (error) {
+        if (typeof error === "string") {
+          throw new Error(error);
+        } else {
+          throw new Error("An error occurred.");
+        }
       }
-    }
-  };
+    },
+    [fetchTodos, toggleCompletedTodoAPI]
+  );
 
-  const getTodoById = async (id: string) => {
-    try {
-      const response = await getTodoByIdAPI(id);
-      if (response.status === 200) {
-        return response.data;
-      } else {
-        throw new Error("Failed to fetch data for the specified ID.");
+  const getTodoById = React.useCallback(
+    async (id: string) => {
+      try {
+        const response = await getTodoByIdAPI(id);
+        if (response.status === 200) {
+          return response.data;
+        } else {
+          throw new Error("Failed to fetch data for the specified ID.");
+        }
+      } catch (error) {
+        if (typeof error === "string") {
+          throw new Error(error);
+        } else {
+          throw new Error("An error occurred.");
+        }
       }
-    } catch (error) {
-      if (typeof error === "string") {
-        throw new Error(error);
-      } else {
-        throw new Error("An error occurred.");
-      }
-    }
-  };
+    },
+    [getTodoByIdAPI]
+  );
 
-  const deleteTodo = async (id: string) => {
-    try {
-      const deletedTodo = await deleteTodoAPI(id);
-      fetchTodos();
-      return deletedTodo;
-    } catch (error) {
-      if (typeof error === "string") {
-        throw new Error(error);
-      } else {
-        throw new Error("An error occurred.");
+  const deleteTodo = React.useCallback(
+    async (id: string) => {
+      try {
+        const deletedTodo = await deleteTodoAPI(id);
+        fetchTodos();
+        return deletedTodo;
+      } catch (error) {
+        if (typeof error === "string") {
+          throw new Error(error);
+        } else {
+          throw new Error("An error occurred.");
+        }
       }
-    }
-  };
+    },
+    [fetchTodos, deleteTodoAPI]
+  );
 
   return (
     <TodoContext.Provider

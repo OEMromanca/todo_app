@@ -7,9 +7,17 @@ const SearchTodo: React.FC = () => {
   const [searchTerm, setSearchTerm] = React.useState("");
   const { searchTodos } = React.useContext(TodoContext) as TodoContextType;
 
-  React.useEffect(() => {
-    searchTodos(searchTerm);
-  }, [searchTerm]);
+  const handleSearchTodos = React.useCallback(
+    (newSearchTerm: string) => {
+      setSearchTerm(newSearchTerm);
+      searchTodos(newSearchTerm);
+    },
+    [searchTodos]
+  );
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    handleSearchTodos(e.target.value);
+  };
 
   return (
     <div className="relative">
@@ -21,7 +29,7 @@ const SearchTodo: React.FC = () => {
         placeholder="Search"
         className="bg-white border border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 rounded-md pl-10 pr-3 py-2 text-gray-900 placeholder-gray-400 focus:outline-none sm:text-sm"
         value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
+        onChange={handleSearchChange}
       />
     </div>
   );

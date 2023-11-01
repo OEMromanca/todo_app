@@ -3,13 +3,18 @@ import { TodoContext } from "../context/todoContext";
 import { ITodo, TodoContextType } from "../interfaces/interfaces";
 import Todo from "./Todo";
 import { AcademicCapIcon } from "@heroicons/react/solid";
+import LoadingSpinner from "./LoadingSpinner";
 
 const CompletedTodos: React.FC = () => {
-  const { completedTodos } = React.useContext(TodoContext) as TodoContextType;
+  const { completedTodos, loading } = React.useContext(
+    TodoContext
+  ) as TodoContextType;
 
   return (
     <>
-      {completedTodos.length ? (
+      {loading ? (
+        <LoadingSpinner />
+      ) : completedTodos.length ? (
         completedTodos.map((todo: ITodo) => <Todo key={todo.id} todo={todo} />)
       ) : (
         <div className="w-full h-40 flex flex-col items-center justify-center">

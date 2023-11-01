@@ -56,7 +56,7 @@ const Todo: React.FC<IProps> = ({ todo }) => {
             {!editTodo ? (
               <div className="divide-y divide-gray-100">
                 <div className="px-2 py-3 sm:grid sm:grid-cols-12 sm:gap-4 sm:px-0">
-                  <div className="text-sm font-medium leading-6 text-gray-900 ml-2 sm:col-span-2">
+                  <div className="font-bold text-sm font-large leading-6 text-gray-900 ml-2 sm:col-span-2">
                     Title:
                   </div>
                   <div
@@ -95,7 +95,7 @@ const Todo: React.FC<IProps> = ({ todo }) => {
                 {isPanelOpen && (
                   <>
                     <div className="px-2 py-3 sm:grid sm:grid-cols-12 sm:gap-4 sm:px-0">
-                      <div className="text-sm font-medium leading-6 text-gray-900 ml-2 sm:col-span-2">
+                      <div className="font-bold text-sm font-large leading-6 text-gray-900 ml-2 sm:col-span-2">
                         Description:
                       </div>
                       <div
@@ -111,7 +111,7 @@ const Todo: React.FC<IProps> = ({ todo }) => {
                     </div>
 
                     <div className="px-2 py-3 sm:grid sm:grid-cols-12 sm:gap-4 sm:px-0">
-                      <div className="text-sm font-medium leading-6 text-gray-900 ml-2 sm:col-span-2">
+                      <div className="font-bold text-sm font-large leading-6 text-gray-900 ml-2 sm:col-span-2">
                         Date & time:
                       </div>
                       <div

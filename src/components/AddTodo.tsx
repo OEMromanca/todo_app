@@ -19,14 +19,17 @@ const SubmitTodo = () => {
     completed: false,
   };
 
-  const handleSubmit = async (values: Omit<ITodo, "id">) => {
-    try {
-      await addTodo(values);
-      navigate("/");
-    } catch (error) {
-      console.error("Error adding a new todo:", error);
-    }
-  };
+  const handleSubmit = React.useCallback(
+    async (values: Omit<ITodo, "id">) => {
+      try {
+        await addTodo(values);
+        navigate("/");
+      } catch (error) {
+        console.error("Error adding a new todo:", error);
+      }
+    },
+    [addTodo, navigate]
+  );
 
   return (
     <div className="bg-white shadow p-1  rounded-lg">

@@ -8,16 +8,25 @@ import {
   toggleCompletedTodoAPI,
   updateTodoAPI,
 } from "../api/api";
+import { setItem, getItem } from "../utils/utils";
+import { navigationButtons } from "../mocks/mockData";
 
 export const TodoContext = React.createContext<TodoContextType | null>(null);
+
+const initialSelectedButton =
+  getItem("selectedButton") || navigationButtons[0].to;
 
 const TodoProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [todos, setTodos] = React.useState<ITodo[]>([]);
   const [loading, setLoading] = React.useState(true);
+  const [selectedButton, setSelectedButton] = React.useState<string>(
+    initialSelectedButton
+  );
 
   React.useEffect(() => {
+    getSelectedButton(selectedButton);
     fetchTodos();
   }, []);
 
@@ -36,6 +45,24 @@ const TodoProvider: React.FC<{ children: React.ReactNode }> = ({
       console.log(error);
     }
   };
+
+  const getSelectedButton = React.useCallback(
+    (value: string) => {
+      const storedRoute = getItem(value);
+      if (storedRoute) {
+        setSelectedButton(storedRoute);
+      }
+    },
+    [getItem]
+  );
+
+  const handleButtonClick = React.useCallback(
+    (route: string) => {
+      setSelectedButton(route);
+      setItem("selectedButton", route);
+    },
+    [setItem]
+  );
 
   const completedTodos = React.useMemo(
     () => todos.filter((todo: ITodo) => todo.completed),
@@ -160,12 +187,16 @@ const TodoProvider: React.FC<{ children: React.ReactNode }> = ({
         todos,
         completedTodos,
         activeTodos,
+        selectedButton,
         addTodo,
         updateTodo,
         deleteTodo,
         getTodoById,
         toggleCompletedTodo,
         searchTodos,
+        handleButtonClick,
+        getSelectedButton,
+        setSelectedButton,
       }}
     >
       {children}

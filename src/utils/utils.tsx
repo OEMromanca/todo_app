@@ -32,3 +32,11 @@ export const validationSchema = Yup.object().shape({
     .required("Description is required")
     .max(255, "Description must not exceed 255 characters"),
 });
+
+export const setItem = (key: string, value: string) => {
+  return localStorage.setItem(key, value);
+};
+
+export const getItem = (key: string) => {
+  return localStorage.getItem(key);
+};

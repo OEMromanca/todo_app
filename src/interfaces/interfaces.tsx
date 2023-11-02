@@ -15,14 +15,18 @@ export type TodoContextType = {
   todos: ITodo[];
   addTodo: (
     newTodo: Omit<ITodo, "id">
-  ) => Promise<AxiosResponse<{}, ITodo | undefined>>;
-  updateTodo: (todo: ITodo) => Promise<AxiosResponse>;
-  deleteTodo: (id: string) => Promise<AxiosResponse>;
+  ) => Promise<AxiosResponse<ITodo | undefined>>;
+  updateTodo: (todo: ITodo) => Promise<AxiosResponse<ITodo>>;
+  deleteTodo: (id: string) => Promise<AxiosResponse<void>>;
   getTodoById: (id: string) => Promise<ITodo | undefined>;
-  toggleCompletedTodo: (todo: ITodo) => Promise<AxiosResponse>;
+  toggleCompletedTodo: (todo: ITodo) => Promise<AxiosResponse<ITodo>>;
   searchTodos: (searchTerm: string) => void;
+  handleButtonClick: (route: string) => void;
+  getSelectedButton: (value: string) => void;
   completedTodos: ITodo[];
   activeTodos: ITodo[];
+  selectedButton: string;
+  setSelectedButton: React.Dispatch<React.SetStateAction<string>>;
 };
 
 export interface IProps {
@@ -60,4 +64,14 @@ export interface IButtonProps {
 export interface IToggleSwitchProps {
   checked: boolean;
   onChange: (checked: boolean) => void;
+}
+
+export interface NavigationButtons {
+  to: string;
+  text: string;
+}
+
+export interface NavigationButtonProps extends NavigationButtons {
+  selected: boolean;
+  onClick: () => void;
 }

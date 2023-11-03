@@ -32,30 +32,28 @@ const SubmitTodo = () => {
   );
 
   return (
-    <div className="bg-white shadow p-1  rounded-lg">
+    <div className="bg-white shadow  rounded-lg w-3/5 p-10">
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
         onSubmit={handleSubmit}
       >
         <Form>
-          <div className="flex h-full flex-col justify-center px-6 py-12 lg:px-8">
-            <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-              <img
-                className="mx-auto h-10 w-auto"
-                src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-                alt="Your Company"
-              />
-              <h2 className="mt-1 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-                Add your tasks
-              </h2>
-            </div>
+          <div className="flex h-full flex-col justify-center">
+            <img
+              className="mx-auto h-10 w-auto"
+              src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
+              alt="Your Company"
+            />
+            <h2 className="text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
+              Add your tasks
+            </h2>
 
-            <div className="mt-5 sm:mx-auto sm:w-full sm:max-w-sm">
+            <div className="mt-5">
               <div className="space-y-2">
                 <div>
                   <label className="block text-sm font-medium leading-6 text-gray-900">
-                    Title
+                    Title:
                   </label>
                   <div className="mt-2">
                     <CustomInput
@@ -75,9 +73,9 @@ const SubmitTodo = () => {
                 </div>
 
                 <div>
-                  <div className="flex items-center justify-between">
+                  <div className="flex items-center justify-between ">
                     <label className="block text-sm font-medium leading-6 text-gray-900">
-                      Description
+                      Description:
                     </label>
                   </div>
                   <div className="mt-2">
@@ -95,12 +93,12 @@ const SubmitTodo = () => {
                       className="text-red-600"
                     />
                   </div>
-                  <div className="flex items-center justify-between">
+                  <div className="flex items-center justify-between mt-2">
                     <label className="block text-sm font-medium leading-6 text-gray-900">
-                      Date
+                      Date:
                     </label>
                   </div>
-                  <div className="mt-2">
+                  <div className="mt-2 mb-6">
                     <Field name="deadline">
                       {({
                         field,

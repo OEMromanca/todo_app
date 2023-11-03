@@ -39,7 +39,7 @@ const Todo: React.FC<IProps> = ({ todo }) => {
   };
 
   return (
-    <div key={todo.id} className="p-2 border rounded-lg mb-2 bg-white">
+    <div key={todo.id} className="p-2 border rounded-lg mb-2 bg-white w-full">
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
@@ -147,7 +147,10 @@ const Todo: React.FC<IProps> = ({ todo }) => {
               </div>
             ) : (
               <>
-                <div className="mt-2">
+                <div className="m-2">
+                  <div className="font-bold text-sm font-large leading-6 text-gray-900 sm:col-span-2">
+                    Title:
+                  </div>
                   <CustomInput
                     type="text"
                     name="title"
@@ -166,7 +169,10 @@ const Todo: React.FC<IProps> = ({ todo }) => {
                   />
                 </div>
 
-                <div className="mt-2">
+                <div className="m-2">
+                  <div className="font-bold text-sm font-large leading-6 text-gray-900   sm:col-span-2">
+                    Description:
+                  </div>
                   <CustomInput
                     as="textarea"
                     name="description"
@@ -186,22 +192,27 @@ const Todo: React.FC<IProps> = ({ todo }) => {
                     className="text-red-600"
                   />
                 </div>
-                <CustomDatePicker
-                  name="deadline"
-                  closeOnSelect={true}
-                  value={todo.deadline}
-                  onChange={(date) => {
-                    setFieldValue("deadline", date);
-                  }}
-                />
+                <div className="m-2">
+                  <div className="font-bold text-sm font-large leading-6 text-gray-900  sm:col-span-2">
+                    Date:
+                  </div>
+                  <CustomDatePicker
+                    name="deadline"
+                    closeOnSelect={true}
+                    value={todo.deadline}
+                    onChange={(date) => {
+                      setFieldValue("deadline", date);
+                    }}
+                  />
 
-                <ErrorMessage
-                  name="deadline"
-                  component="div"
-                  className="text-red-600"
-                />
+                  <ErrorMessage
+                    name="deadline"
+                    component="div"
+                    className="text-red-600"
+                  />
+                </div>
 
-                <div className="flex items-center mt-2 space-x-2">
+                <div className="flex items-center space-x-2 ml-2 mb-2">
                   <div className="mt-2 space-x-2">
                     <CustomButton
                       type={"submit"}

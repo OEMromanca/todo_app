@@ -11,7 +11,7 @@ const ActiveTodos: React.FC = () => {
   ) as TodoContextType;
 
   return (
-    <>
+    <div className="w-full h-full">
       {loading ? (
         <LoadingSpinner />
       ) : activeTodos.length ? (
@@ -22,7 +22,7 @@ const ActiveTodos: React.FC = () => {
           <AcademicCapIcon className="h-12 w-12" aria-hidden="true" />
         </div>
       )}
-    </>
+    </div>
   );
 };
 

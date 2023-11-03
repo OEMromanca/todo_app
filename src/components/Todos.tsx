@@ -9,7 +9,7 @@ const Todos: React.FC = () => {
   const { todos, loading } = React.useContext(TodoContext) as TodoContextType;
 
   return (
-    <>
+    <div className="w-full h-full">
       {loading ? (
         <LoadingSpinner />
       ) : todos.length ? (
@@ -20,7 +20,7 @@ const Todos: React.FC = () => {
           <AcademicCapIcon className="h-12 w-12" aria-hidden="true" />
         </div>
       )}
-    </>
+    </div>
   );
 };
 

@@ -1,19 +1,21 @@
 import React from "react";
-import { TodoContext } from "../context/todoContext";
 import Todo from "./Todo";
-import { ITodo, TodoContextType } from "../interfaces/interfaces";
+import { AppContextType, ITodo } from "../interfaces/interfaces";
 import { AcademicCapIcon } from "@heroicons/react/solid";
 import LoadingSpinner from "./LoadingSpinner";
+import { AppContext } from "../context/appContext";
 
 const Todos: React.FC = () => {
-  const { todos, loading } = React.useContext(TodoContext) as TodoContextType;
+  const { paginatedTodos, loading } = React.useContext(
+    AppContext
+  ) as AppContextType;
 
   return (
     <div className="w-full h-full">
       {loading ? (
         <LoadingSpinner />
-      ) : todos.length ? (
-        todos.map((todo: ITodo) => <Todo key={todo.id} todo={todo} />)
+      ) : paginatedTodos.length ? (
+        paginatedTodos.map((todo: ITodo) => <Todo key={todo.id} todo={todo} />)
       ) : (
         <div className="w-full h-40 flex flex-col items-center justify-center">
           <div className="font-bold">You have no todos yet.</div>

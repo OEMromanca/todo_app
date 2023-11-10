@@ -4,6 +4,7 @@ import Todos from "./Todos";
 import CompletedTodos from "./CompletedTodos";
 import ActiveTodos from "./ActiveTodos";
 import SubmitTodo from "./AddTodo";
+import Pagination from "./Pagination";
 
 const Content: React.FC = () => {
   return (
@@ -14,6 +15,7 @@ const Content: React.FC = () => {
         <Route path="/active" element={<ActiveTodos />} />
         <Route path="/submit" element={<SubmitTodo />} />
       </Routes>
+      <Pagination />
     </div>
   );
 };

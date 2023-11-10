@@ -1,13 +1,13 @@
 import React from "react";
-import { TodoContextType } from "../interfaces/interfaces";
-import { TodoContext } from "../context/todoContext";
+import { AppContextType } from "../interfaces/interfaces";
 import { navigationButtons } from "../mocks/mockData";
 import NavigationButton from "./NavigationButton";
+import { AppContext } from "../context/appContext";
 
 const SideBar: React.FC = () => {
   const { selectedButton, handleButtonClick } = React.useContext(
-    TodoContext
-  ) as TodoContextType;
+    AppContext
+  ) as AppContextType;
 
   return (
     <div className="sidebar bg-gray-900">

@@ -4,20 +4,9 @@ import { TodoContextType } from "../interfaces/interfaces";
 import { SearchIcon } from "@heroicons/react/solid";
 
 const SearchTodo: React.FC = () => {
-  const [searchTerm, setSearchTerm] = React.useState("");
-  const { searchTodos } = React.useContext(TodoContext) as TodoContextType;
-
-  const handleSearchTodos = React.useCallback(
-    (newSearchTerm: string) => {
-      setSearchTerm(newSearchTerm);
-      searchTodos(newSearchTerm);
-    },
-    [searchTodos]
-  );
-
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    handleSearchTodos(e.target.value);
-  };
+  const { searchTodo, handleSearchChange } = React.useContext(
+    TodoContext
+  ) as TodoContextType;
 
   return (
     <div className="relative">
@@ -28,7 +17,7 @@ const SearchTodo: React.FC = () => {
         type="text"
         placeholder="Search"
         className="bg-white border border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 rounded-md pl-10 pr-3 py-2 text-gray-900 placeholder-gray-400 focus:outline-none sm:text-sm"
-        value={searchTerm}
+        value={searchTodo}
         onChange={handleSearchChange}
       />
     </div>

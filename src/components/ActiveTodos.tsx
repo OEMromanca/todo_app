@@ -1,14 +1,19 @@
 import React from "react";
 import { TodoContext } from "../context/todoContext";
-import { ITodo, TodoContextType } from "../interfaces/interfaces";
+import {
+  AppContextType,
+  ITodo,
+  TodoContextType,
+} from "../interfaces/interfaces";
 import Todo from "./Todo";
 import { AcademicCapIcon } from "@heroicons/react/solid";
 import LoadingSpinner from "./LoadingSpinner";
+import { AppContext } from "../context/appContext";
 
 const ActiveTodos: React.FC = () => {
-  const { activeTodos, loading } = React.useContext(
-    TodoContext
-  ) as TodoContextType;
+  const { activeTodos } = React.useContext(TodoContext) as TodoContextType;
+
+  const { loading } = React.useContext(AppContext) as AppContextType;
 
   return (
     <div className="w-full h-full">

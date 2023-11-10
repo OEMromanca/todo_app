@@ -10,9 +10,36 @@ export interface ITodo {
   deadline: string;
   completed: boolean;
 }
-export type TodoContextType = {
+
+export type AppContextType = {
+  paginatedTodos: ITodo[];
   loading: boolean;
   todos: ITodo[];
+  fetchPaginatedTodos: (
+    countPage: number,
+    limitPaginationNumber: number
+  ) => void;
+  currentPage: number;
+  setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
+  limitPaginationNumber: number;
+  setPaginatedTodos: React.Dispatch<React.SetStateAction<ITodo[]>>;
+  handleButtonClick: (route: string) => void;
+  getSelectedButton: (value: string) => void;
+  paginationArray: number[];
+  selectedButton: string;
+};
+
+export type PaginationContextType = {
+  handleClickPage: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  handlePreviousClick: () => void;
+  handleNextClick: () => void;
+  maxPageNumberLimit: number;
+  minPageNumberLimit: number;
+  rightSideHorizontalDots?: React.ReactNode;
+  leftSideHorizontalDots?: React.ReactNode;
+};
+
+export type TodoContextType = {
   addTodo: (
     newTodo: Omit<ITodo, "id">
   ) => Promise<AxiosResponse<ITodo | undefined>>;
@@ -21,12 +48,10 @@ export type TodoContextType = {
   getTodoById: (id: string) => Promise<ITodo | undefined>;
   toggleCompletedTodo: (todo: ITodo) => Promise<AxiosResponse<ITodo>>;
   searchTodos: (searchTerm: string) => void;
-  handleButtonClick: (route: string) => void;
-  getSelectedButton: (value: string) => void;
   completedTodos: ITodo[];
   activeTodos: ITodo[];
-  selectedButton: string;
-  setSelectedButton: React.Dispatch<React.SetStateAction<string>>;
+  searchTodo: string;
+  handleSearchChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
 export interface IProps {

@@ -1,90 +1,65 @@
 import React from "react";
-import { ITodo, TodoContextType } from "../interfaces/interfaces";
+import {
+  AppContextType,
+  ITodo,
+  TodoContextType,
+} from "../interfaces/interfaces";
 import {
   addTodoAPI,
   deleteTodoAPI,
   getTodoByIdAPI,
-  getTodosAPI,
   toggleCompletedTodoAPI,
   updateTodoAPI,
 } from "../api/api";
-import { setItem, getItem } from "../utils/utils";
-import { navigationButtons } from "../mocks/mockData";
+import { AppContext } from "./appContext";
 
 export const TodoContext = React.createContext<TodoContextType | null>(null);
-
-const initialSelectedButton =
-  getItem("selectedButton") || navigationButtons[0].to;
 
 const TodoProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [todos, setTodos] = React.useState<ITodo[]>([]);
-  const [loading, setLoading] = React.useState(true);
-  const [selectedButton, setSelectedButton] = React.useState<string>(
-    initialSelectedButton
-  );
-
-  React.useEffect(() => {
-    getSelectedButton(selectedButton);
-    fetchTodos();
-  }, []);
-
-  const fetchTodos = async () => {
-    try {
-      const response = await getTodosAPI();
-      if (response.status === 200) {
-        setLoading(false);
-        const allTodos = response.data as ITodo[];
-        setTodos(allTodos);
-      } else {
-        throw new Error("Failed to fetch data from the API.");
-      }
-    } catch (error) {
-      setLoading(true);
-      console.log(error);
-    }
-  };
-
-  const getSelectedButton = React.useCallback(
-    (value: string) => {
-      const storedRoute = getItem(value);
-      if (storedRoute) {
-        setSelectedButton(storedRoute);
-      }
-    },
-    [getItem]
-  );
-
-  const handleButtonClick = React.useCallback(
-    (route: string) => {
-      setSelectedButton(route);
-      setItem("selectedButton", route);
-    },
-    [setItem]
-  );
+  const {
+    paginatedTodos,
+    fetchPaginatedTodos,
+    currentPage,
+    limitPaginationNumber,
+    setPaginatedTodos,
+  } = React.useContext(AppContext) as AppContextType;
+  const [searchTodo, setSearchTodo] = React.useState("");
 
   const completedTodos = React.useMemo(
-    () => todos.filter((todo: ITodo) => todo.completed),
-    [todos]
+    () => paginatedTodos.filter((todo) => todo.completed),
+    [paginatedTodos]
   );
   const activeTodos = React.useMemo(
-    () => todos.filter((todo: ITodo) => !todo.completed),
-    [todos]
+    () => paginatedTodos.filter((todo) => !todo.completed),
+    [paginatedTodos]
   );
 
   const searchTodos = React.useCallback(
     (searchTerm: string) => {
       if (!searchTerm) {
-        fetchTodos();
+        fetchPaginatedTodos(currentPage, limitPaginationNumber);
       }
-      const filtered = todos.filter((todo) =>
+      const filtered = paginatedTodos.filter((todo) =>
         todo.title.toLowerCase().includes(searchTerm.toLowerCase())
       );
-      setTodos(filtered);
+      setPaginatedTodos(filtered);
     },
-    [fetchTodos, todos]
+    [fetchPaginatedTodos, paginatedTodos]
   );
+
+  const handleSearchTodos = React.useCallback(
+    (newSearchTodo: string) => {
+      setSearchTodo(newSearchTodo);
+      searchTodos(newSearchTodo);
+    },
+    [searchTodos]
+  );
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    handleSearchTodos(e.target.value);
+  };
 
   const addTodo = React.useCallback(
     async (newTodo: Omit<ITodo, "id">) => {
@@ -96,7 +71,7 @@ const TodoProvider: React.FC<{ children: React.ReactNode }> = ({
           completed: false,
         };
         const saveTodo = await addTodoAPI(todo);
-        fetchTodos();
+        fetchPaginatedTodos(currentPage, limitPaginationNumber);
         return saveTodo.data;
       } catch (error) {
         if (typeof error === "string") {
@@ -106,14 +81,14 @@ const TodoProvider: React.FC<{ children: React.ReactNode }> = ({
         }
       }
     },
-    [addTodoAPI, fetchTodos]
+    [addTodoAPI, fetchPaginatedTodos]
   );
 
   const updateTodo = React.useCallback(
     async (todo: ITodo) => {
       try {
         const updatedTodo = await updateTodoAPI(todo);
-        fetchTodos();
+        fetchPaginatedTodos(currentPage, limitPaginationNumber);
         return updatedTodo;
       } catch (error) {
         if (typeof error === "string") {
@@ -123,14 +98,14 @@ const TodoProvider: React.FC<{ children: React.ReactNode }> = ({
         }
       }
     },
-    [fetchTodos, updateTodoAPI]
+    [fetchPaginatedTodos, updateTodoAPI]
   );
 
   const toggleCompletedTodo = React.useCallback(
     async (todo: ITodo) => {
       try {
         const completedTodo = await toggleCompletedTodoAPI(todo);
-        fetchTodos();
+        fetchPaginatedTodos(currentPage, limitPaginationNumber);
         return completedTodo;
       } catch (error) {
         if (typeof error === "string") {
@@ -140,7 +115,7 @@ const TodoProvider: React.FC<{ children: React.ReactNode }> = ({
         }
       }
     },
-    [fetchTodos, toggleCompletedTodoAPI]
+    [fetchPaginatedTodos, toggleCompletedTodoAPI]
   );
 
   const getTodoById = React.useCallback(
@@ -167,7 +142,7 @@ const TodoProvider: React.FC<{ children: React.ReactNode }> = ({
     async (id: string) => {
       try {
         const deletedTodo = await deleteTodoAPI(id);
-        fetchTodos();
+        fetchPaginatedTodos(currentPage, limitPaginationNumber);
         return deletedTodo;
       } catch (error) {
         if (typeof error === "string") {
@@ -177,26 +152,22 @@ const TodoProvider: React.FC<{ children: React.ReactNode }> = ({
         }
       }
     },
-    [fetchTodos, deleteTodoAPI]
+    [fetchPaginatedTodos, deleteTodoAPI]
   );
 
   return (
     <TodoContext.Provider
       value={{
-        loading,
-        todos,
         completedTodos,
         activeTodos,
-        selectedButton,
+        searchTodo,
         addTodo,
         updateTodo,
         deleteTodo,
         getTodoById,
         toggleCompletedTodo,
         searchTodos,
-        handleButtonClick,
-        getSelectedButton,
-        setSelectedButton,
+        handleSearchChange,
       }}
     >
       {children}

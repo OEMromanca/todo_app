@@ -3,7 +3,15 @@ import { ITodo } from "../interfaces/interfaces";
 
 const apiURL = "https://6532520fd80bd20280f5552c.mockapi.io/api/todos";
 
-export const getTodosAPI = async () => {
+export const getPaginatedTodosAPI = async (page: number, limit: number) => {
+  const params = new URLSearchParams();
+  params.append("page", String(page));
+  params.append("limit", String(limit));
+
+  return await axios.get(`${apiURL}?${params.toString()}`);
+};
+
+export const getAllTodosAPI = async () => {
   return await axios.get(`${apiURL}`);
 };
 

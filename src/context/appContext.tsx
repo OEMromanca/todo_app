@@ -16,7 +16,7 @@ const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     initialSelectedButton
   );
   const [currentPage, setCurrentPage] = React.useState(1);
-  const limitPaginationNumber = 6;
+  const limitPaginationNumber = 2;
   const todosLength = todos.length;
 
   const totalPagesNumber = Math.ceil(todosLength / limitPaginationNumber);

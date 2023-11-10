@@ -22,30 +22,39 @@ const PaginationProvider: React.FC<{ children: React.ReactNode }> = ({
   const [maxPageNumberLimit, setmaxPageNumberLimit] = React.useState(5);
   const [minPageNumberLimit, setminPageNumberLimit] = React.useState(0);
 
-  const handleClickPage = (e: React.MouseEvent<HTMLButtonElement>) => {
-    setCurrentPage(Number(e.currentTarget.id));
-  };
+  const handleClickPage = React.useCallback(
+    (e: React.MouseEvent<HTMLButtonElement>) => {
+      setCurrentPage(Number(e.currentTarget.id));
+    },
+    [setCurrentPage]
+  );
 
-  const handleNextClick = () => {
+  const handleNextClick = React.useCallback(() => {
     if (currentPage < paginationArray.length) {
       setCurrentPage(currentPage + 1);
     }
     if (currentPage + 1 > maxPageNumberLimit) {
-      setmaxPageNumberLimit(maxPageNumberLimit + pageNumberLimit);
-      setminPageNumberLimit(minPageNumberLimit + pageNumberLimit);
+      setmaxPageNumberLimit((prev) => prev + pageNumberLimit);
+      setminPageNumberLimit((prev) => prev + pageNumberLimit);
     }
-  };
+  }, [currentPage, maxPageNumberLimit, pageNumberLimit, setCurrentPage]);
 
-  const handlePreviousClick = () => {
+  const handlePreviousClick = React.useCallback(() => {
     if (currentPage > 1) {
       setCurrentPage(currentPage - 1);
 
-      if ((currentPage - 1) % pageNumberLimit == 0) {
-        setmaxPageNumberLimit(maxPageNumberLimit - pageNumberLimit);
-        setminPageNumberLimit(minPageNumberLimit - pageNumberLimit);
+      if ((currentPage - 1) % pageNumberLimit === 0) {
+        setmaxPageNumberLimit((prev) => prev - pageNumberLimit);
+        setminPageNumberLimit((prev) => prev - pageNumberLimit);
       }
     }
-  };
+  }, [
+    currentPage,
+    maxPageNumberLimit,
+    minPageNumberLimit,
+    pageNumberLimit,
+    setCurrentPage,
+  ]);
 
   const rightSideHorizontalDots = paginationArray.length >
     maxPageNumberLimit && (

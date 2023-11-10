@@ -15,6 +15,7 @@ export type AppContextType = {
   paginatedTodos: ITodo[];
   loading: boolean;
   todos: ITodo[];
+  todosLength: number;
   fetchPaginatedTodos: (
     countPage: number,
     limitPaginationNumber: number

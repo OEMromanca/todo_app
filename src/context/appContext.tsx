@@ -12,9 +12,10 @@ const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [loading, setLoading] = React.useState(true);
   const initialSelectedButton =
     getItem("selectedButton") || navigationButtons[0].to;
-  const [selectedButton, setSelectedButton] = React.useState<string>(
+  const [selectedButton, setSelectedButton] = React.useState(
     initialSelectedButton
   );
+
   const [currentPage, setCurrentPage] = React.useState(1);
   const limitPaginationNumber = 2;
   const todosLength = todos.length;
@@ -100,6 +101,7 @@ const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         getSelectedButton,
         paginationArray,
         selectedButton,
+        todosLength,
       }}
     >
       {children}

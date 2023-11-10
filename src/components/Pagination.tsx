@@ -16,24 +16,22 @@ const Pagination: React.FC = () => {
     rightSideHorizontalDots,
     leftSideHorizontalDots,
   } = React.useContext(PaginationContext) as PaginationContextType;
-  const { currentPage, paginationArray } = React.useContext(
-    AppContext
-  ) as AppContextType;
+  const { currentPage, paginationArray, todosLength, paginatedTodos } =
+    React.useContext(AppContext) as AppContextType;
 
   return (
-    <div className="flex items-center  border-t border-gray-200 bg-white px-4 py-3 ">
+    <div className="flex items-center  border-t border-gray-200 bg-white px-4 py-3 w-2/4">
       <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
-        {/* <div>
-          <p className="text-sm text-gray-700">
-            Showing
-            <span className="font-medium">1</span>
-            to
-            <span className="font-medium">10</span>
-            of
-            <span className="font-medium">97</span>
-            results
-          </p>
-        </div> */}
+        <div className="flex items-center justify-between text-sm text-gray-700   w-1/2 mr-2">
+          <div>Showing</div>
+          <div className="font-bold">{currentPage}</div>
+          to
+          <span className="font-bold">{paginatedTodos.length}</span>
+          of
+          <span className="font-bold">{todosLength}</span>
+          <div>results</div>
+        </div>
+
         <div>
           <nav
             className="isolate inline-flex -space-x-px rounded-md shadow-sm w-full"
@@ -74,7 +72,7 @@ const Pagination: React.FC = () => {
                     className={`${
                       currentPage === pageButton
                         ? "bg-indigo-600"
-                        : "bg-indigo-100"
+                        : "bg-indigo-200"
                     } relative z-10 inline-flex items-center px-4 py-2 text-sm font-semibold text-white focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600}`}
                   >
                     {pageButton}

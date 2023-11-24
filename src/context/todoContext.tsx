@@ -24,6 +24,8 @@ const TodoProvider: React.FC<{ children: React.ReactNode }> = ({
     currentPage,
     limitPaginationNumber,
     setPaginatedTodos,
+    selectedButton,
+    fetchAllTodos,
   } = React.useContext(AppContext) as AppContextType;
   const [searchTodo, setSearchTodo] = React.useState("");
 
@@ -39,7 +41,7 @@ const TodoProvider: React.FC<{ children: React.ReactNode }> = ({
   const searchTodos = React.useCallback(
     (searchTerm: string) => {
       if (!searchTerm) {
-        fetchPaginatedTodos(currentPage, limitPaginationNumber);
+        fetchPaginatedTodos(currentPage, limitPaginationNumber, selectedButton);
       }
       const filtered = paginatedTodos.filter((todo) =>
         todo.title.toLowerCase().includes(searchTerm.toLowerCase())
@@ -71,7 +73,8 @@ const TodoProvider: React.FC<{ children: React.ReactNode }> = ({
           completed: false,
         };
         const saveTodo = await addTodoAPI(todo);
-        fetchPaginatedTodos(currentPage, limitPaginationNumber);
+        fetchPaginatedTodos(currentPage, limitPaginationNumber, selectedButton);
+        fetchAllTodos();
         return saveTodo.data;
       } catch (error) {
         if (typeof error === "string") {
@@ -81,14 +84,14 @@ const TodoProvider: React.FC<{ children: React.ReactNode }> = ({
         }
       }
     },
-    [addTodoAPI, fetchPaginatedTodos]
+    [addTodoAPI, fetchPaginatedTodos, fetchAllTodos]
   );
 
   const updateTodo = React.useCallback(
     async (todo: ITodo) => {
       try {
         const updatedTodo = await updateTodoAPI(todo);
-        fetchPaginatedTodos(currentPage, limitPaginationNumber);
+        fetchPaginatedTodos(currentPage, limitPaginationNumber, selectedButton);
         return updatedTodo;
       } catch (error) {
         if (typeof error === "string") {
@@ -105,7 +108,8 @@ const TodoProvider: React.FC<{ children: React.ReactNode }> = ({
     async (todo: ITodo) => {
       try {
         const completedTodo = await toggleCompletedTodoAPI(todo);
-        fetchPaginatedTodos(currentPage, limitPaginationNumber);
+        fetchPaginatedTodos(currentPage, limitPaginationNumber, selectedButton);
+        fetchAllTodos();
         return completedTodo;
       } catch (error) {
         if (typeof error === "string") {
@@ -115,7 +119,13 @@ const TodoProvider: React.FC<{ children: React.ReactNode }> = ({
         }
       }
     },
-    [fetchPaginatedTodos, toggleCompletedTodoAPI]
+    [
+      fetchPaginatedTodos,
+      toggleCompletedTodoAPI,
+      fetchAllTodos,
+      currentPage,
+      limitPaginationNumber,
+    ]
   );
 
   const getTodoById = React.useCallback(
@@ -142,7 +152,8 @@ const TodoProvider: React.FC<{ children: React.ReactNode }> = ({
     async (id: string) => {
       try {
         const deletedTodo = await deleteTodoAPI(id);
-        fetchPaginatedTodos(currentPage, limitPaginationNumber);
+        fetchPaginatedTodos(currentPage, limitPaginationNumber, selectedButton);
+        fetchAllTodos();
         return deletedTodo;
       } catch (error) {
         if (typeof error === "string") {
@@ -152,7 +163,7 @@ const TodoProvider: React.FC<{ children: React.ReactNode }> = ({
         }
       }
     },
-    [fetchPaginatedTodos, deleteTodoAPI]
+    [fetchPaginatedTodos, deleteTodoAPI, fetchAllTodos]
   );
 
   return (

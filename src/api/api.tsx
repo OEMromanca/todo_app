@@ -11,6 +11,30 @@ export const getPaginatedTodosAPI = async (page: number, limit: number) => {
   return await axios.get(`${apiURL}?${params.toString()}`);
 };
 
+export const getPaginatedActiveTodosAPI = async (
+  page: number,
+  limit: number
+) => {
+  const params = new URLSearchParams();
+  params.append("page", String(page));
+  params.append("limit", String(limit));
+  params.append("completed", "false");
+
+  return await axios.get(`${apiURL}?${params.toString()}`);
+};
+
+export const getPaginatedCompletedTodosAPI = async (
+  page: number,
+  limit: number
+) => {
+  const params = new URLSearchParams();
+  params.append("page", String(page));
+  params.append("limit", String(limit));
+  params.append("completed", "true");
+
+  return await axios.get(`${apiURL}?${params.toString()}`);
+};
+
 export const getAllTodosAPI = async () => {
   return await axios.get(`${apiURL}`);
 };

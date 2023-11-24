@@ -16,9 +16,11 @@ export type AppContextType = {
   loading: boolean;
   todos: ITodo[];
   todosLength: number;
+  fetchAllTodos: () => void;
   fetchPaginatedTodos: (
     countPage: number,
-    limitPaginationNumber: number
+    limitPaginationNumber: number,
+    route: string
   ) => void;
   currentPage: number;
   setCurrentPage: React.Dispatch<React.SetStateAction<number>>;

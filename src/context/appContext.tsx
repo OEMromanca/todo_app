@@ -2,7 +2,12 @@ import React from "react";
 import { AppContextType, ITodo } from "../interfaces/interfaces";
 import { getItem, setItem } from "../utils/utils";
 import { navigationButtons } from "../mocks/mockData";
-import { getAllTodosAPI, getPaginatedTodosAPI } from "../api/api";
+import {
+  getAllTodosAPI,
+  getPaginatedActiveTodosAPI,
+  getPaginatedCompletedTodosAPI,
+  getPaginatedTodosAPI,
+} from "../api/api";
 
 export const AppContext = React.createContext<AppContextType | null>(null);
 
@@ -18,7 +23,14 @@ const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
   const [currentPage, setCurrentPage] = React.useState(1);
   const limitPaginationNumber = 2;
-  const todosLength = todos.length;
+  const todosLength =
+    selectedButton === "/"
+      ? todos.length
+      : selectedButton === "/active"
+      ? todos.filter((todo) => !todo.completed).length
+      : selectedButton === "/completed"
+      ? todos.filter((todo) => todo.completed).length
+      : 0;
 
   const totalPagesNumber = Math.ceil(todosLength / limitPaginationNumber);
 
@@ -29,7 +41,7 @@ const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
   React.useEffect(() => {
     getSelectedButton(selectedButton);
-    fetchPaginatedTodos(currentPage, limitPaginationNumber);
+    fetchPaginatedTodos(currentPage, limitPaginationNumber, selectedButton);
     fetchAllTodos();
   }, [currentPage, selectedButton, limitPaginationNumber]);
 
@@ -39,7 +51,7 @@ const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
       if (response.status === 200) {
         setLoading(false);
         const allTodos = response.data as ITodo[];
-        setTodos(allTodos);
+        setTodos([...allTodos]);
       } else {
         throw new Error("Failed to fetch data from the API.");
       }
@@ -50,13 +62,24 @@ const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   }, [getAllTodosAPI, setLoading, setTodos]);
 
   const fetchPaginatedTodos = React.useCallback(
-    async (page: number, limit: number) => {
+    async (page: number, limit: number, route: string) => {
       try {
-        const response = await getPaginatedTodosAPI(page, limit);
+        setLoading(true);
+        const response =
+          route === "/"
+            ? await getPaginatedTodosAPI(page, limit)
+            : route === "/active"
+            ? await getPaginatedActiveTodosAPI(page, limit)
+            : route === "/completed"
+            ? await getPaginatedCompletedTodosAPI(page, limit)
+            : (() => {
+                throw new Error("Invalid route");
+              })();
+
         if (response.status === 200) {
           setLoading(false);
           const paginatedTodos = response.data as ITodo[];
-          setPaginatedTodos(paginatedTodos);
+          setPaginatedTodos([...paginatedTodos]);
         } else {
           throw new Error("Failed to fetch data from the API.");
         }
@@ -65,7 +88,13 @@ const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         console.log(error);
       }
     },
-    [getPaginatedTodosAPI, setLoading, setPaginatedTodos]
+    [
+      getPaginatedTodosAPI,
+      setLoading,
+      setPaginatedTodos,
+      getPaginatedActiveTodosAPI,
+      getPaginatedCompletedTodosAPI,
+    ]
   );
 
   const getSelectedButton = React.useCallback(
@@ -75,15 +104,16 @@ const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         setSelectedButton(storedRoute);
       }
     },
-    [getItem]
+    [getItem, setSelectedButton]
   );
 
   const handleButtonClick = React.useCallback(
     (route: string) => {
       setSelectedButton(route);
       setItem("selectedButton", route);
+      setCurrentPage(1);
     },
-    [setItem]
+    [setItem, setSelectedButton]
   );
 
   return (
@@ -92,6 +122,7 @@ const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         paginatedTodos,
         todos,
         loading,
+        fetchAllTodos,
         fetchPaginatedTodos,
         currentPage,
         limitPaginationNumber,

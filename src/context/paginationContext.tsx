@@ -13,14 +13,25 @@ export const PaginationContext =
 const PaginationProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const { paginationArray, currentPage, setCurrentPage } = React.useContext(
-    AppContext
-  ) as AppContextType;
+  const { paginationArray, currentPage, setCurrentPage, todos } =
+    React.useContext(AppContext) as AppContextType;
 
   const pageNumberLimit = 5;
 
   const [maxPageNumberLimit, setmaxPageNumberLimit] = React.useState(5);
   const [minPageNumberLimit, setminPageNumberLimit] = React.useState(0);
+
+  React.useEffect(() => {
+    if (todos.length > 0) {
+      let updatedCurrentPage = currentPage;
+      if (currentPage > paginationArray.length) {
+        updatedCurrentPage = paginationArray.length;
+      }
+      setCurrentPage(updatedCurrentPage);
+      setmaxPageNumberLimit(pageNumberLimit);
+      setminPageNumberLimit(0);
+    }
+  }, [todos, currentPage, setCurrentPage, pageNumberLimit, paginationArray]);
 
   const handleClickPage = React.useCallback(
     (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -31,7 +42,7 @@ const PaginationProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const handleNextClick = React.useCallback(() => {
     if (currentPage < paginationArray.length) {
-      setCurrentPage(currentPage + 1);
+      setCurrentPage((currentPage) => currentPage + 1);
     }
     if (currentPage + 1 > maxPageNumberLimit) {
       setmaxPageNumberLimit((prev) => prev + pageNumberLimit);
@@ -41,7 +52,7 @@ const PaginationProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const handlePreviousClick = React.useCallback(() => {
     if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
+      setCurrentPage((currentPage) => currentPage - 1);
 
       if ((currentPage - 1) % pageNumberLimit === 0) {
         setmaxPageNumberLimit((prev) => prev - pageNumberLimit);

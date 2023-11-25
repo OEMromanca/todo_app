@@ -16,8 +16,30 @@ const Pagination: React.FC = () => {
     rightSideHorizontalDots,
     leftSideHorizontalDots,
   } = React.useContext(PaginationContext) as PaginationContextType;
-  const { currentPage, paginationArray, todosLength, paginatedTodos } =
-    React.useContext(AppContext) as AppContextType;
+  const {
+    currentPage,
+    paginationArray,
+    todosLength,
+    paginatedTodos,
+    setCurrentPage,
+  } = React.useContext(AppContext) as AppContextType;
+
+  const firstPaginationButton = () => {
+    if (paginationArray.length === 0) {
+      return (
+        <button
+          key={1}
+          id={String(1)}
+          aria-current="page"
+          onClick={handleClickPage}
+          className="bg-indigo-600 relative z-10 inline-flex items-center px-4 py-2 text-sm font-semibold text-white focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+        >
+          {1}
+        </button>
+      );
+    }
+    setCurrentPage(1);
+  };
 
   return (
     <div className="flex items-center  border-t border-gray-200 bg-white px-4 py-3 w-2/4">
@@ -54,10 +76,13 @@ const Pagination: React.FC = () => {
                 />
               </svg>
             </button>
-
             {leftSideHorizontalDots}
 
+            {firstPaginationButton()}
+
             {paginationArray.map((pageButton: number) => {
+              console.log(pageButton, "BUTTON");
+
               if (
                 pageButton < maxPageNumberLimit + 1 &&
                 pageButton > minPageNumberLimit
@@ -79,9 +104,7 @@ const Pagination: React.FC = () => {
                 );
               }
             })}
-
             {rightSideHorizontalDots}
-
             <button
               onClick={handleNextClick}
               className="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"

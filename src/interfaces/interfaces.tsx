@@ -83,10 +83,14 @@ export interface IInputProps {
 export type ButtonType = "button" | "submit" | "reset" | undefined;
 
 export interface IButtonProps {
+  id?: string;
+  key?: number;
   type: ButtonType;
-  onClick?: () => void;
+  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
   text?: string;
   className: keyof typeof buttonClassNames;
+  style?: React.CSSProperties;
+  children?: React.ReactNode;
 }
 
 export interface IToggleSwitchProps {

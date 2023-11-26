@@ -7,6 +7,8 @@ export const buttonClassNames = {
   edit: `font-medium text-indigo-500 hover:text-indigo-600 p-2 focus:outline-none ml-3`,
   confirm: `bg-blue-600 text-white p-2 rounded hover:bg-blue-400 focus:outline-none`,
   cancel: `font-medium text-red-400 hover:text-red-600 p-2 focus:outline-none ml-3`,
+  paginationButton: `relative z-10 inline-flex items-center px-4 py-2 text-sm font-semibold text-white focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600`,
+  paginationArrowButton: `relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0`,
 };
 
 const CustomButton: React.FC<IButtonProps> = ({
@@ -14,14 +16,22 @@ const CustomButton: React.FC<IButtonProps> = ({
   onClick,
   text,
   className,
+  key,
+  id,
+  style,
+  children,
 }) => {
   return (
     <button
+      style={style}
+      id={id}
+      key={key}
       type={type}
       onClick={onClick}
       className={buttonClassNames[className]}
     >
       {text}
+      {children}
     </button>
   );
 };

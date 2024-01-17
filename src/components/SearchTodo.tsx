@@ -1,5 +1,5 @@
 import React from "react";
-import { TodoContext } from "../context/todoContext";
+import { TodoContext } from "../contextApi/todoContext";
 import { TodoContextType } from "../interfaces/interfaces";
 import { SearchIcon } from "@heroicons/react/solid";
 

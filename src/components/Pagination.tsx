@@ -1,10 +1,10 @@
 import React from "react";
-import { PaginationContext } from "../context/paginationContext";
+import { PaginationContext } from "../contextApi/paginationContext";
 import {
   AppContextType,
   PaginationContextType,
 } from "../interfaces/interfaces";
-import { AppContext } from "../context/appContext";
+import { AppContext } from "../contextApi/appContext";
 import CustomButton from "./CustomButton";
 
 const Pagination: React.FC = () => {

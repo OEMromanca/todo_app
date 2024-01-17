@@ -1,5 +1,5 @@
 import React from "react";
-import { TodoContext } from "../context/todoContext";
+import { TodoContext } from "../contextApi/todoContext";
 import { Formik, Form, ErrorMessage } from "formik";
 import "react-datetime/css/react-datetime.css";
 import { ChevronLeftIcon, ChevronDownIcon } from "@heroicons/react/outline";
@@ -15,7 +15,7 @@ const Todo: React.FC<IProps> = ({ todo }) => {
     React.useContext(TodoContext) as TodoContextType;
 
   const [editTodo, setEditTodo] = React.useState(false);
-  const [isPanelOpen, setPanelOpen] = React.useState(false);
+  const [isPanelOpen, setIsPanelOpen] = React.useState(false);
 
   const initialValues = {
     title: todo.title,
@@ -29,7 +29,7 @@ const Todo: React.FC<IProps> = ({ todo }) => {
   };
 
   const togglePanel = () => {
-    setPanelOpen((current) => !current);
+    setIsPanelOpen((current) => !current);
   };
 
   const getTodo = (id: string) => {

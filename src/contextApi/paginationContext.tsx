@@ -18,8 +18,8 @@ const PaginationProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const pageNumberLimit = 5;
 
-  const [maxPageNumberLimit, setmaxPageNumberLimit] = React.useState(5);
-  const [minPageNumberLimit, setminPageNumberLimit] = React.useState(0);
+  const [maxPageNumberLimit, setMaxPageNumberLimit] = React.useState(5);
+  const [minPageNumberLimit, setMinPageNumberLimit] = React.useState(0);
 
   React.useEffect(() => {
     if (todos.length > 0) {
@@ -28,10 +28,18 @@ const PaginationProvider: React.FC<{ children: React.ReactNode }> = ({
         updatedCurrentPage = paginationArray.length;
       }
       setCurrentPage(updatedCurrentPage);
-      setmaxPageNumberLimit(pageNumberLimit);
-      setminPageNumberLimit(0);
+      setMaxPageNumberLimit(pageNumberLimit);
+      setMinPageNumberLimit(0);
     }
-  }, [todos, currentPage, setCurrentPage, pageNumberLimit, paginationArray]);
+  }, [
+    todos,
+    currentPage,
+    setCurrentPage,
+    setMaxPageNumberLimit,
+    setMinPageNumberLimit,
+    pageNumberLimit,
+    paginationArray,
+  ]);
 
   const handleClickPage = React.useCallback(
     (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -45,26 +53,34 @@ const PaginationProvider: React.FC<{ children: React.ReactNode }> = ({
       setCurrentPage((currentPage) => currentPage + 1);
     }
     if (currentPage + 1 > maxPageNumberLimit) {
-      setmaxPageNumberLimit((prev) => prev + pageNumberLimit);
-      setminPageNumberLimit((prev) => prev + pageNumberLimit);
+      setMaxPageNumberLimit((prev) => prev + pageNumberLimit);
+      setMinPageNumberLimit((prev) => prev + pageNumberLimit);
     }
-  }, [currentPage, maxPageNumberLimit, pageNumberLimit, setCurrentPage]);
+  }, [
+    currentPage,
+    setMaxPageNumberLimit,
+    setMinPageNumberLimit,
+    maxPageNumberLimit,
+    paginationArray,
+    pageNumberLimit,
+    setCurrentPage,
+  ]);
 
   const handlePreviousClick = React.useCallback(() => {
     if (currentPage > 1) {
       setCurrentPage((currentPage) => currentPage - 1);
 
       if ((currentPage - 1) % pageNumberLimit === 0) {
-        setmaxPageNumberLimit((prev) => prev - pageNumberLimit);
-        setminPageNumberLimit((prev) => prev - pageNumberLimit);
+        setMaxPageNumberLimit((prev) => prev - pageNumberLimit);
+        setMinPageNumberLimit((prev) => prev - pageNumberLimit);
       }
     }
   }, [
     currentPage,
-    maxPageNumberLimit,
-    minPageNumberLimit,
     pageNumberLimit,
     setCurrentPage,
+    setMaxPageNumberLimit,
+    setMinPageNumberLimit,
   ]);
 
   const rightSideHorizontalDots = paginationArray.length >

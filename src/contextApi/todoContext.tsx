@@ -48,7 +48,14 @@ const TodoProvider: React.FC<{ children: React.ReactNode }> = ({
       );
       setPaginatedTodos(filtered);
     },
-    [fetchPaginatedTodos, paginatedTodos]
+    [
+      fetchPaginatedTodos,
+      paginatedTodos,
+      currentPage,
+      limitPaginationNumber,
+      selectedButton,
+      setPaginatedTodos,
+    ]
   );
 
   const handleSearchTodos = React.useCallback(
@@ -84,7 +91,13 @@ const TodoProvider: React.FC<{ children: React.ReactNode }> = ({
         }
       }
     },
-    [addTodoAPI, fetchPaginatedTodos, fetchAllTodos]
+    [
+      fetchPaginatedTodos,
+      fetchAllTodos,
+      currentPage,
+      limitPaginationNumber,
+      selectedButton,
+    ]
   );
 
   const updateTodo = React.useCallback(
@@ -101,7 +114,7 @@ const TodoProvider: React.FC<{ children: React.ReactNode }> = ({
         }
       }
     },
-    [fetchPaginatedTodos, updateTodoAPI]
+    [fetchPaginatedTodos, currentPage, limitPaginationNumber, selectedButton]
   );
 
   const toggleCompletedTodo = React.useCallback(
@@ -121,32 +134,29 @@ const TodoProvider: React.FC<{ children: React.ReactNode }> = ({
     },
     [
       fetchPaginatedTodos,
-      toggleCompletedTodoAPI,
       fetchAllTodos,
       currentPage,
       limitPaginationNumber,
+      selectedButton,
     ]
   );
 
-  const getTodoById = React.useCallback(
-    async (id: string) => {
-      try {
-        const response = await getTodoByIdAPI(id);
-        if (response.status === 200) {
-          return response.data;
-        } else {
-          throw new Error("Failed to fetch data for the specified ID.");
-        }
-      } catch (error) {
-        if (typeof error === "string") {
-          throw new Error(error);
-        } else {
-          throw new Error("An error occurred.");
-        }
+  const getTodoById = React.useCallback(async (id: string) => {
+    try {
+      const response = await getTodoByIdAPI(id);
+      if (response.status === 200) {
+        return response.data;
+      } else {
+        throw new Error("Failed to fetch data for the specified ID.");
       }
-    },
-    [getTodoByIdAPI]
-  );
+    } catch (error) {
+      if (typeof error === "string") {
+        throw new Error(error);
+      } else {
+        throw new Error("An error occurred.");
+      }
+    }
+  }, []);
 
   const deleteTodo = React.useCallback(
     async (id: string) => {
@@ -163,7 +173,13 @@ const TodoProvider: React.FC<{ children: React.ReactNode }> = ({
         }
       }
     },
-    [fetchPaginatedTodos, deleteTodoAPI, fetchAllTodos]
+    [
+      fetchPaginatedTodos,
+      fetchAllTodos,
+      currentPage,
+      limitPaginationNumber,
+      selectedButton,
+    ]
   );
 
   return (

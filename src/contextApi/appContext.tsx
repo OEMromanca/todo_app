@@ -23,14 +23,15 @@ const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
   const [currentPage, setCurrentPage] = React.useState(1);
   const limitPaginationNumber = 2;
-  const todosLength =
-    selectedButton === "/"
-      ? todos.length
-      : selectedButton === "/active"
-      ? todos.filter((todo) => !todo.completed).length
-      : selectedButton === "/completed"
-      ? todos.filter((todo) => todo.completed).length
-      : 0;
+  let todosLength = 0;
+
+  if (selectedButton === "/") {
+    todosLength = todos.length;
+  } else if (selectedButton === "/active") {
+    todosLength = todos.filter((todo) => !todo.completed).length;
+  } else if (selectedButton === "/completed") {
+    todosLength = todos.filter((todo) => todo.completed).length;
+  }
 
   const totalPagesNumber = Math.ceil(todosLength / limitPaginationNumber);
 
@@ -38,12 +39,6 @@ const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   for (let i = 1; i <= totalPagesNumber; i++) {
     paginationArray.push(i);
   }
-
-  React.useEffect(() => {
-    getSelectedButton(selectedButton);
-    fetchPaginatedTodos(currentPage, limitPaginationNumber, selectedButton);
-    fetchAllTodos();
-  }, [currentPage, selectedButton, limitPaginationNumber]);
 
   const fetchAllTodos = React.useCallback(async () => {
     try {
@@ -59,22 +54,28 @@ const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
       setLoading(true);
       console.log(error);
     }
-  }, [getAllTodosAPI, setLoading, setTodos]);
+  }, [setLoading, setTodos]);
 
   const fetchPaginatedTodos = React.useCallback(
     async (page: number, limit: number, route: string) => {
       try {
         setLoading(true);
-        const response =
-          route === "/"
-            ? await getPaginatedTodosAPI(page, limit)
-            : route === "/active"
-            ? await getPaginatedActiveTodosAPI(page, limit)
-            : route === "/completed"
-            ? await getPaginatedCompletedTodosAPI(page, limit)
-            : (() => {
-                throw new Error("Invalid route");
-              })();
+
+        let response;
+
+        switch (route) {
+          case "/":
+            response = await getPaginatedTodosAPI(page, limit);
+            break;
+          case "/active":
+            response = await getPaginatedActiveTodosAPI(page, limit);
+            break;
+          case "/completed":
+            response = await getPaginatedCompletedTodosAPI(page, limit);
+            break;
+          default:
+            throw new Error("Invalid route");
+        }
 
         if (response.status === 200) {
           setLoading(false);
@@ -88,13 +89,7 @@ const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         console.log(error);
       }
     },
-    [
-      getPaginatedTodosAPI,
-      setLoading,
-      setPaginatedTodos,
-      getPaginatedActiveTodosAPI,
-      getPaginatedCompletedTodosAPI,
-    ]
+    [setLoading, setPaginatedTodos]
   );
 
   const getSelectedButton = React.useCallback(
@@ -104,8 +99,21 @@ const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         setSelectedButton(storedRoute);
       }
     },
-    [getItem, setSelectedButton]
+    [setSelectedButton]
   );
+
+  React.useEffect(() => {
+    getSelectedButton(selectedButton);
+    fetchPaginatedTodos(currentPage, limitPaginationNumber, selectedButton);
+    fetchAllTodos();
+  }, [
+    currentPage,
+    limitPaginationNumber,
+    selectedButton,
+    fetchAllTodos,
+    fetchPaginatedTodos,
+    getSelectedButton,
+  ]);
 
   const handleButtonClick = React.useCallback(
     (route: string) => {
@@ -113,7 +121,7 @@ const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
       setItem("selectedButton", route);
       setCurrentPage(1);
     },
-    [setItem, setSelectedButton]
+    [setSelectedButton, setCurrentPage]
   );
 
   return (

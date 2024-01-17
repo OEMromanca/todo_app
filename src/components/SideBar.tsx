@@ -2,7 +2,7 @@ import React from "react";
 import { AppContextType } from "../interfaces/interfaces";
 import { navigationButtons } from "../mocks/mockData";
 import NavigationButton from "./NavigationButton";
-import { AppContext } from "../context/appContext";
+import { AppContext } from "../contextApi/appContext";
 
 const SideBar: React.FC = () => {
   const { selectedButton, handleButtonClick } = React.useContext(

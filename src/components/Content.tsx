@@ -9,10 +9,8 @@ import Pagination from "./Pagination";
 const Content: React.FC = () => {
   const location = useLocation();
 
-  // Define routes for which you want to show Pagination
   const showPaginationRoutes = ["/", "/completed", "/active"];
 
-  // Check if the current route should show Pagination
   const shouldShowPagination = showPaginationRoutes.includes(location.pathname);
 
   return (

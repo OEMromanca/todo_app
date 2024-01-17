@@ -8,5 +8,13 @@ import WindiCSS from 'vite-plugin-windicss';
     WindiCSS(),
    ],
 
-   base: ''
+   base: '/',
+
+   server: {
+     port: 5137,
+   },
+ 
+   build: {
+     outDir: 'dist',
+   },
 });

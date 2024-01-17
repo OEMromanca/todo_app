@@ -1,6 +1,6 @@
 import React from "react";
 import { Formik, Form, Field, ErrorMessage, FieldProps } from "formik";
-import { TodoContext } from "../context/todoContext";
+import { TodoContext } from "../contextApi/todoContext";
 import { useNavigate } from "react-router-dom";
 import { ITodo, TodoContextType } from "../interfaces/interfaces";
 import { validationSchema } from "../utils/utils";
@@ -52,9 +52,9 @@ const SubmitTodo = () => {
             <div className="mt-5">
               <div className="space-y-2">
                 <div>
-                  <label className="block text-sm font-medium leading-6 text-gray-900">
+                  <div className="block text-sm font-medium leading-6 text-gray-900">
                     Title:
-                  </label>
+                  </div>
                   <div className="mt-2">
                     <CustomInput
                       type="text"
@@ -74,9 +74,9 @@ const SubmitTodo = () => {
 
                 <div>
                   <div className="flex items-center justify-between ">
-                    <label className="block text-sm font-medium leading-6 text-gray-900">
+                    <div className="block text-sm font-medium leading-6 text-gray-900">
                       Description:
-                    </label>
+                    </div>
                   </div>
                   <div className="mt-2">
                     <CustomInput
@@ -94,9 +94,9 @@ const SubmitTodo = () => {
                     />
                   </div>
                   <div className="flex items-center justify-between mt-2">
-                    <label className="block text-sm font-medium leading-6 text-gray-900">
+                    <div className="block text-sm font-medium leading-6 text-gray-900">
                       Date:
-                    </label>
+                    </div>
                   </div>
                   <div className="mt-2 mb-6">
                     <Field name="deadline">
